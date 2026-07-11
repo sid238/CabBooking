@@ -6,21 +6,21 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -35,66 +35,77 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FusedLocationProviderClient fusedLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST = 100;
 
+    private TextView addressText;
+    private LinearLayout chipBike, chipAuto, chipCab;
+    private Button bookBtn;
+    private String selectedService = "Bike";
+
+    private final String[][] SERVICES = {
+        {"Bike", "₹49"},
+        {"Auto", "₹89"},
+        {"Cab", "₹129"}
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         drawerLayout = findViewById(R.id.drawerLayout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar,
-            R.string.nav_open, R.string.nav_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        ImageButton menuBtn = findViewById(R.id.menuBtn);
+        ImageButton profileBtn = findViewById(R.id.profileBtn);
+        addressText = findViewById(R.id.addressText);
+        LinearLayout searchCard = findViewById(R.id.searchCard);
+        chipBike = findViewById(R.id.chipBike);
+        chipAuto = findViewById(R.id.chipAuto);
+        chipCab = findViewById(R.id.chipCab);
+        bookBtn = findViewById(R.id.bookBtn);
+        LinearLayout savedPlacesRow = findViewById(R.id.savedPlacesRow);
+
+        menuBtn.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
+        profileBtn.setOnClickListener(v -> startActivity(new Intent(this, ProfileActivity.class)));
+
+        searchCard.setOnClickListener(v -> openSearch(null));
+        bookBtn.setOnClickListener(v -> openSearch(null));
+
+        chipBike.setOnClickListener(v -> selectService("Bike"));
+        chipAuto.setOnClickListener(v -> selectService("Auto"));
+        chipCab.setOnClickListener(v -> selectService("Cab"));
+
+        setupSavedPlaces(savedPlacesRow);
+        setupNavigationDrawer();
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
             .findFragmentById(R.id.map);
         if (mapFragment != null) mapFragment.getMapAsync(this);
 
-        setupServiceTiles();
-        setupSavedPlaces();
-        setupNavigationDrawer();
         requestLocationPermission();
     }
 
-    private void setupServiceTiles() {
-        LinearLayout container = findViewById(R.id.serviceTiles);
-        String[][] services = {
-            {"Cab", "4 seats", "🚗"},
-            {"Bike", "1 seat", "🏍️"},
-            {"Auto", "3 seats", "🛺"},
-            {"Parcel", "Delivery", "📦"}
-        };
-        for (String[] s : services) {
-            View v = getLayoutInflater().inflate(R.layout.item_service_tile, container, false);
-            ((TextView) v.findViewById(R.id.tileName)).setText(s[0]);
-            ((TextView) v.findViewById(R.id.tileSub)).setText(s[1]);
-            ((TextView) v.findViewById(R.id.tileIcon)).setText(s[2]);
-            v.setOnClickListener(view -> {
-                Intent i = new Intent(this, SearchActivity.class);
-                i.putExtra("service", s[0]);
-                startActivity(i);
-            });
-            container.addView(v);
-        }
+    private void openSearch(String destination) {
+        Intent i = new Intent(this, SearchActivity.class);
+        i.putExtra("service", selectedService);
+        if (destination != null) i.putExtra("destination", destination);
+        startActivity(i);
     }
 
-    private void setupSavedPlaces() {
-        LinearLayout container = findViewById(R.id.savedPlacesRow);
+    private void selectService(String service) {
+        selectedService = service;
+        chipBike.setBackgroundResource(service.equals("Bike") ? R.drawable.bg_chip_selected : R.drawable.bg_chip);
+        chipAuto.setBackgroundResource(service.equals("Auto") ? R.drawable.bg_chip_selected : R.drawable.bg_chip);
+        chipCab.setBackgroundResource(service.equals("Cab") ? R.drawable.bg_chip_selected : R.drawable.bg_chip);
+        bookBtn.setText("Book " + service);
+    }
+
+    private void setupSavedPlaces(LinearLayout container) {
         String[][] places = {{"Home", "123 Main Street"}, {"Work", "456 Office Road"}};
         for (String[] p : places) {
             View v = getLayoutInflater().inflate(R.layout.item_saved_place, container, false);
             ((TextView) v.findViewById(R.id.placeLabel)).setText(p[0]);
             ((TextView) v.findViewById(R.id.placeAddress)).setText(p[1]);
-            v.setOnClickListener(view -> {
-                Intent i = new Intent(this, SearchActivity.class);
-                i.putExtra("destination", p[1]);
-                startActivity(i);
-            });
+            v.setOnClickListener(view -> openSearch(p[1]));
             container.addView(v);
         }
     }
@@ -122,7 +133,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                 LOCATION_PERMISSION_REQUEST);
         } else {
-            getCurrentLocation();
+            loadCurrentLocation();
         }
     }
 
@@ -131,26 +142,48 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == LOCATION_PERMISSION_REQUEST && grantResults.length > 0
             && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            getCurrentLocation();
+            loadCurrentLocation();
+        } else {
+            Toast.makeText(this, "Location permission needed to show your position", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void getCurrentLocation() {
+    private void loadCurrentLocation() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) return;
-        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
-            if (location != null && mMap != null) {
-                LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.addMarker(new MarkerOptions().position(latLng).title("You are here"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-            }
-        });
+
+        fusedLocationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, null)
+            .addOnSuccessListener(location -> {
+                if (location != null) {
+                    updateMapLocation(location);
+                } else {
+                    fusedLocationClient.getLastLocation().addOnSuccessListener(this::updateMapLocation);
+                }
+            })
+            .addOnFailureListener(e -> fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this::updateMapLocation));
+    }
+
+    private void updateMapLocation(Location location) {
+        if (location == null) return;
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        if (mMap != null) {
+            mMap.clear();
+            mMap.addMarker(new MarkerOptions().position(latLng).title("You are here"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        }
+        if (addressText != null) addressText.setText("Current Location");
     }
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mMap = googleMap;
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        getCurrentLocation();
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+        }
+        loadCurrentLocation();
     }
 }
