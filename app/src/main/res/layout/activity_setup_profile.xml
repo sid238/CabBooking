@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:gravity="center" android:orientation="vertical" android:padding="32dp">
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:text="Complete Profile" android:textColor="@color/textPrimary"
+        android:textSize="24sp" android:textStyle="bold" />
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" android:text="Add your details to get started"
+        android:textColor="@color/grayText" android:textSize="14sp" />
+
+    <de.hdodenhof.circleimageview.CircleImageView android:id="@+id/profileImage"
+        android:layout_width="88dp" android:layout_height="88dp" android:layout_marginTop="32dp"
+        android:src="@drawable/ic_person" android:elevation="4dp" />
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" android:text="Add Photo" android:textColor="@color/primary"
+        android:textSize="14sp" android:textStyle="bold" />
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="56dp"
+        android:layout_marginTop="28dp" android:background="@drawable/bg_input"
+        android:gravity="center_vertical" android:paddingHorizontal="16dp">
+        <EditText android:id="@+id/nameInput" android:layout_width="match_parent"
+            android:layout_height="match_parent" android:background="@null"
+            android:hint="@string/name_hint" android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="56dp"
+        android:layout_marginTop="16dp" android:background="@drawable/bg_input"
+        android:gravity="center_vertical" android:paddingHorizontal="16dp">
+        <EditText android:id="@+id/emailInput" android:layout_width="match_parent"
+            android:layout_height="match_parent" android:background="@null"
+            android:hint="@string/email_hint" android:inputType="textEmailAddress"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <Button android:id="@+id/saveBtn" android:layout_width="match_parent"
+        android:layout_height="54dp" android:layout_marginTop="32dp"
+        android:backgroundTint="@color/primary" android:text="@string/save"
+        android:textColor="@color/white" android:textSize="16sp" android:textStyle="bold" />
+
+    <TextView android:id="@+id/skipBtn" android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:layout_marginTop="16dp"
+        android:text="@string/skip" android:textColor="@color/grayText" android:textSize="14sp" />
+</LinearLayout>

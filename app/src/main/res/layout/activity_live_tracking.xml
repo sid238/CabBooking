@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar"
+        android:layout_width="match_parent" android:layout_height="54dp"
+        android:background="@color/primary" app:title="Your Ride"
+        app:titleTextColor="@color/white" app:navigationIcon="?homeAsUpIndicator" />
+
+    <FrameLayout android:layout_width="match_parent" android:layout_height="0dp"
+        android:layout_weight="1">
+        <fragment android:id="@+id/trackMap" android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent" android:layout_height="match_parent" />
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:layout_gravity="bottom" android:background="@color/white"
+            android:elevation="8dp" android:orientation="vertical" android:padding="20dp">
+
+            <TextView android:id="@+id/tripStatus" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:text="Driver is arriving"
+                android:textColor="@color/textPrimary" android:textSize="20sp" android:textStyle="bold" />
+
+            <TextView android:id="@+id/tripEta" android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:layout_marginTop="4dp"
+                android:text="Arriving in 3 min" android:textColor="@color/grayText" android:textSize="14sp" />
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="16dp" android:gravity="center_vertical">
+
+                <de.hdodenhof.circleimageview.CircleImageView android:id="@+id/driverPhoto"
+                    android:layout_width="52dp" android:layout_height="52dp" android:src="@drawable/ic_person" />
+
+                <LinearLayout android:layout_width="0dp" android:layout_height="wrap_content"
+                    android:layout_weight="1" android:orientation="vertical" android:paddingHorizontal="12dp">
+                    <TextView android:id="@+id/driverName" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="Rajesh Kumar"
+                        android:textColor="@color/textPrimary" android:textSize="16sp" android:textStyle="bold" />
+                    <TextView android:id="@+id/vehicleInfo" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:text="KA01AB1234  |  Swift"
+                        android:textColor="@color/grayText" android:textSize="12sp" />
+                </LinearLayout>
+
+                <TextView android:id="@+id/driverRating" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="4.8 \u2605"
+                    android:textColor="@color/textPrimary" android:textSize="16sp" android:textStyle="bold" />
+            </LinearLayout>
+
+            <TextView android:id="@+id/otpDisplay" android:layout_width="match_parent"
+                android:layout_height="44dp" android:layout_marginTop="12dp"
+                android:gravity="center" android:text="OTP: 1234"
+                android:textColor="@color/primary" android:textSize="20sp" android:textStyle="bold"
+                android:background="@drawable/bg_input" />
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="12dp" android:gravity="center">
+                <Button android:id="@+id/callBtn" android:layout_width="0dp" android:layout_height="44dp"
+                    android:layout_weight="1" android:layout_marginRight="6dp"
+                    android:backgroundTint="@color/success" android:text="Call"
+                    android:textColor="@color/white" />
+                <Button android:id="@+id/cancelBtn" android:layout_width="0dp" android:layout_height="44dp"
+                    android:layout_weight="1" android:layout_marginLeft="6dp"
+                    android:backgroundTint="@color/error" android:text="Cancel"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

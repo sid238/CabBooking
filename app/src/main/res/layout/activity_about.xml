@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:gravity="center" android:orientation="vertical" android:padding="32dp">
+
+    <TextView android:layout_width="80dp" android:layout_height="80dp" android:gravity="center"
+        android:background="@color/primary" android:text="CB" android:textColor="@color/white"
+        android:textSize="32sp" android:textStyle="bold" />
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" android:text="Cab Booking" android:textColor="@color/textPrimary"
+        android:textSize="22sp" android:textStyle="bold" />
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="4dp" android:text="Version 1.0.0"
+        android:textColor="@color/grayText" android:textSize="14sp" />
+
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginTop="20dp" android:gravity="center"
+        android:text="Your reliable ride partner. Book cabs, bikes & auto-rickshaws instantly."
+        android:textColor="@color/grayText" android:textSize="14sp" android:lineSpacingExtra="4dp" />
+</LinearLayout>

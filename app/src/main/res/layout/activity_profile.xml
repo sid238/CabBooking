@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar android:id="@+id/toolbar"
+        android:layout_width="match_parent" android:layout_height="54dp"
+        android:background="@color/primary" app:title="My Profile"
+        app:titleTextColor="@color/white" app:navigationIcon="?homeAsUpIndicator" />
+
+    <ScrollView android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:orientation="vertical" android:padding="20dp">
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:gravity="center" android:orientation="vertical">
+                <de.hdodenhof.circleimageview.CircleImageView android:id="@+id/profileImage"
+                    android:layout_width="80dp" android:layout_height="80dp" android:src="@drawable/ic_person" />
+                <TextView android:id="@+id/userName" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:layout_marginTop="8dp"
+                    android:text="John Doe" android:textColor="@color/textPrimary"
+                    android:textSize="18sp" android:textStyle="bold" />
+                <TextView android:id="@+id/userPhone" android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:text="+91 98765 43210"
+                    android:textColor="@color/grayText" android:textSize="13sp" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="20dp" android:orientation="vertical">
+
+                <LinearLayout android:id="@+id/walletRow" style="@style/MenuRow"
+                    android:onClick="onMenuClick">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Wallet" android:textSize="15sp" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text=">" android:textColor="@color/grayText" />
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/paymentsRow" style="@style/MenuRow"
+                    android:onClick="onMenuClick">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Payments" android:textSize="15sp" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text=">" android:textColor="@color/grayText" />
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/savedPlacesRow" style="@style/MenuRow"
+                    android:onClick="onMenuClick">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Saved Places" android:textSize="15sp" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text=">" android:textColor="@color/grayText" />
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/supportRow" style="@style/MenuRow"
+                    android:onClick="onMenuClick">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Support" android:textSize="15sp" />
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text=">" android:textColor="@color/grayText" />
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/logoutRow" style="@style/MenuRow"
+                    android:onClick="onMenuClick">
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Logout" android:textColor="@color/error"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</LinearLayout>
